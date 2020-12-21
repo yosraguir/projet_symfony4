@@ -1,6 +1,7 @@
 <?php
 namespace App\Controller;
 use App\Entity\Article;
+use App\Entity\Category;
 use App\Form\ArticleType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -11,7 +12,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 class IndexController extends AbstractController
 {
  /**
- *@Route("/",name="article_list")
+ *@Route("/article",name="article_list")
  */
  public function home()
  {
@@ -21,7 +22,7 @@ class IndexController extends AbstractController
    
 
  /**
-  * @Route("/dashbord")
+  * @Route("/")
   */
 public function index(){
     return $this->render('baseDashbord.html.twig');
@@ -110,5 +111,6 @@ public function show($id) {
   return $this->redirectToRoute('article_list');
   }
  
+  
 
 }
