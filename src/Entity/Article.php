@@ -27,7 +27,7 @@ class Article
      *maxMessage = "Le nom d'un article doit comporter au plus {{ limit }} caractères"
      * )
      */
-    private $Nom;
+    private $nom;
 
     /**
      * @ORM\Column(type="decimal", precision=10, scale=0)
@@ -36,7 +36,7 @@ class Article
      *      message = "Le prix d’un article ne doit pas être égal à 0 "
      * )
      */
-    private $Prix;
+    private $prix;
 
     /**
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="articles")
@@ -50,24 +50,24 @@ class Article
 
     public function getNom(): ?string
     {
-        return $this->Nom;
+        return $this->nom;
     }
 
-    public function setNom(string $Nom): self
+    public function setNom(string $nom): self
     {
-        $this->Nom = $Nom;
+        $this->nom = $nom;
 
         return $this;
     }
 
     public function getPrix(): ?string
     {
-        return $this->Prix;
+        return $this->prix;
     }
 
-    public function setPrix(string $Prix): self
+    public function setPrix(string $prix): self
     {
-        $this->Prix = $Prix;
+        $this->prix = $prix;
 
         return $this;
     }
