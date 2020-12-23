@@ -42,28 +42,30 @@ class SecurityController extends AbstractController
 
         $em->persist($user);
         $em->flush();
-        return $this->rederictToRoute('security_login');
+        
         }
         return $this->render('security/registration.html.twig',[
             'form' =>$form->createView()]);
     }
-/**
-* @Route("/connexion",name="security_login")
-*/
- public function login(AuthenticationUtils $authenticationUtils)
-  {
-    // get the login error if there is one
-    $error = $authenticationUtils->getLastAuthenticationError();
-    // last username entered by the user
-    $lastUsername = $authenticationUtils->getLastUsername();
 
-    return $this->render('security/login.html.twig',[
-        'lastUsername'=>$lastUsername,'error' => $error]);
-  }
+        /**
+        * @Route("/connexion", name="security_login")
+        */
+        public function login(AuthenticationUtils $authenticationUtils)
+        {
+            // get the login error if there is one
+            $error = $authenticationUtils->getLastAuthenticationError();
+            // last username entered by the user
+            $lastUsername = $authenticationUtils->getLastUsername();
+
+            return $this->render('security/login.html.twig',[
+                'lastUsername'=>$lastUsername,'error' => $error]);
+        }
 /**
-* @Route("/deconnexion",name="security_logout")
+* @Route("/deconnexion", name="security_logout")
 */
-    public function logout(){ }
+    public function logout(){}
+     
 
 
 }

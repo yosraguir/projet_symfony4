@@ -40,18 +40,19 @@ class User implements UserInterface
      * @Assert\Length(
      *      min = 8,
      *      minMessage = "Votre mot de passe doit comporter au minimum {{ limit }} caractères")
-     * @Assert\EqualTo(propertyPath = "confirm_password",
-     * message="Vous n'avez pas saisi le même mot de passe !" )
      */
     private $password;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\EqualTo(propertyPath = "password",
-     * message="Vous n'avez pas saisi le même mot de passe !" )
      */
     private $confirm_password;
 
+    /**
+     * @ORM\Column(type="json")
+    */
+    private $roles = [];
+   
     public function getId(): ?int
     {
         return $this->id;
@@ -104,10 +105,19 @@ class User implements UserInterface
 
         return $this;
     }
-
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+        return $this;
+    }
     public function getRoles()
     {
-        return ['ROLE_USER'];
+        $roles = $this->roles;
+        // garantit que chaque utilisateur possède le rôle ROLE_USER
+        // équivalent à array_push() qui ajoute un élément au tabeau
+           $roles[] = 'ROLE_USER';
+        //array_unique élémine des doublons
+            return array_unique($roles);
     }
 
     public function eraseCredentials() {}

@@ -2,5 +2,5 @@
 #    path: /
 #    controller: App\Controller\DefaultController::index
 homepage:
- path: /
- controller: App\Controller\IndexController::index
+ path: /connexion
+ controller: App\Controller\SecurityController::login

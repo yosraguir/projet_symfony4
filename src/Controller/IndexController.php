@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 class IndexController extends AbstractController
 {
@@ -68,6 +69,7 @@ public function save() {
   }
 
   /**
+ * @IsGranted("ROLE_EDITOR")
  * @Route("/article/new", name="new_article")
  * Method({"GET", "POST"})
  */
@@ -100,8 +102,9 @@ public function show($id) {
    //
 
    /**
- * @Route("/article/edit/{id}", name="edit_article")
- * Method({"GET", "POST"})
+      * @IsGranted("ROLE_EDITOR")
+      * @Route("/article/edit/{id}", name="edit_article")
+      * Method({"GET", "POST"})
  */
  public function edit(Request $request, $id) {
   $article = new Article();
@@ -121,8 +124,9 @@ public function show($id) {
   }
  
   /**
- * @Route("/article/delete/{id}",name="delete_article")
- * @Method({"DELETE"})
+    * @IsGranted("ROLE_EDITOR")
+    * @Route("/article/delete/{id}",name="delete_article")
+    * @Method({"DELETE"})
  */
  public function delete(Request $request, $id) {
   $article = $this->getDoctrine()->getRepository(Article::class)->find($id);
