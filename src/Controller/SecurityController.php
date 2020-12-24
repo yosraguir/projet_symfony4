@@ -14,14 +14,17 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {
-    /**
-     * @Route("/security", name="security")
-     */
-    public function index(): Response
+/**
+* @Route("/connexion", name="security_login")
+*/
+public function login(AuthenticationUtils $authenticationUtils)
     {
-        return $this->render('security/index.html.twig', [
-            'controller_name' => 'SecurityController',
-        ]);
+        // get the login error if there is one
+        $error = $authenticationUtils->getLastAuthenticationError();
+        // last username entered by the user
+        $lastUsername = $authenticationUtils->getLastUsername();
+        return $this->render('security/login.html.twig',[
+            'lastUsername'=>$lastUsername,'error' => $error]);
     }
 
     /**
@@ -48,19 +51,7 @@ class SecurityController extends AbstractController
             'form' =>$form->createView()]);
     }
 
-        /**
-        * @Route("/connexion", name="security_login")
-        */
-        public function login(AuthenticationUtils $authenticationUtils)
-        {
-            // get the login error if there is one
-            $error = $authenticationUtils->getLastAuthenticationError();
-            // last username entered by the user
-            $lastUsername = $authenticationUtils->getLastUsername();
-
-            return $this->render('security/login.html.twig',[
-                'lastUsername'=>$lastUsername,'error' => $error]);
-        }
+      
 /**
 * @Route("/deconnexion", name="security_logout")
 */

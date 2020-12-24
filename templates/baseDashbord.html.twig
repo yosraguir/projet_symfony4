@@ -8,9 +8,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 		<meta name="description" content="">
 		<meta name="author" content="">
-		{% block title %}
-			<title>Dashboard</title>
-		{% endblock %}
+		  {% block title %}<title>Dashboard</title>{% endblock %}
 
 		{% block style %}
 			<!-- Custom fonts for this template-->
@@ -127,7 +125,7 @@
 
 						<!-- Nav Item - Tables -->
 						<li class="nav-item">
-							<a class="nav-link" href="tables.html">
+							<a class="nav-link" href="{{ path('security_logout') }}">
 								<i class="fas fa-fw fa-table"></i>
 								<span>Tables</span>
 							</a>
@@ -214,7 +212,11 @@
 								</li>
 								<li class="nav-item">
 										<a href="{{ path('security_login')}}" class="nav-link">Connexion</a>
-									</li>
+								</li>
+								
+								
+								
+									
 								
                             </ul>
 								{% endif %}
@@ -378,7 +380,7 @@
 											Activity Log
 										</a>
 										<div class="dropdown-divider"></div>
-										<a class="dropdown-item" href="{{ path('security_logout') }}" data-toggle="modal" data-target="#logoutModal">
+										<a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
 											<i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
 											Logout
 										</a>
@@ -396,15 +398,9 @@
 					<!-- Begin Page Content -->
 					<div class="container-fluid">
 						{% block body %}
-							<!-- Page Heading -->
-							<!--<div class="d-sm-flex align-items-center justify-content-between mb-4">
-							                        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-							                        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-							                                class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
-							                    </div>-->{% block articles %}
+						{% block articles %}
 						{% endblock %}
-
-					{% endblock %}
+    					{% endblock %}
 
 				</div>
 					<!-- /.container-fluid -->

@@ -19,7 +19,7 @@ security:
                 check_path: security_login
             logout:
                 path: security_logout
-                target: article_list
+                target: security_login
     encoders:
         App\Entity\User:
             algorithm: bcrypt

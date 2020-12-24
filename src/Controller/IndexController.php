@@ -17,47 +17,49 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 class IndexController extends AbstractController
+
 {
- /**
- *@Route("/article",name="article_list")
- */
- public function home(Request $request)
- {
-  $propertySearch = new PropertySearch();
-  $form = $this->createForm(PropertySearchType::class,$propertySearch);
-  $form->handleRequest($request);
-  //initialement le tableau des articles est vide,
-  //c.a.d on affiche les articles que lorsque l'utilisateur
-  //clique sur le bouton rechercher
-  //$articles= [];
-  $articles= $this->getDoctrine()->getRepository(Article::class)->findAll();
-  if($form->isSubmitted() && $form->isValid()) {
-  //on récupère le nom d'article tapé dans le formulaire
 
-  $nom = $propertySearch->getNom();
- if ($nom!="")
- //si on a fourni un nom d'article on affiche tous les articles ayant ce nm
- $articles= $this->getDoctrine()->getRepository(Article::class)->findBy(['nom' => $nom] );
- else
- //si si aucun nom n'est fourni on affiche tous les articles
- $articles= $this->getDoctrine()->getRepository(Article::class)->findAll();
- }
- return $this->render('articles/index.html.twig',[ 'form' =>$form->createView(), 'articles' => $articles]);
- }
-  
-   
-
- /**
+  /**
   * @Route("/", name="dashbord")
   */
-public function index(){
-    return $this->render('baseDashbord.html.twig');
-}
+  public function index()
+  {
+      return $this->render('baseDashbord.html.twig');
+  }
+    /**
+     *@Route("/article",name="article_list")
+    */
+    public function home(Request $request)
+    {
+      $propertySearch = new PropertySearch();
+      $form = $this->createForm(PropertySearchType::class,$propertySearch);
+      $form->handleRequest($request);
+      //initialement le tableau des articles est vide,
+      //c.a.d on affiche les articles que lorsque l'utilisateur
+      //clique sur le bouton rechercher
+      //$articles= [];
+      $articles= $this->getDoctrine()->getRepository(Article::class)->findAll();
+      if($form->isSubmitted() && $form->isValid()) {
+      //on récupère le nom d'article tapé dans le formulaire
 
-/**
+      $nom = $propertySearch->getNom();
+    if ($nom!="")
+    //si on a fourni un nom d'article on affiche tous les articles ayant ce nm
+    $articles= $this->getDoctrine()->getRepository(Article::class)->findBy(['nom' => $nom] );
+    else
+    //si si aucun nom n'est fourni on affiche tous les articles
+    $articles= $this->getDoctrine()->getRepository(Article::class)->findAll();
+    }
+    return $this->render('articles/index.html.twig',[ 'form' =>$form->createView(), 'articles' => $articles]);
+    }
+  
+
+ /**
  * @Route("/article/save")
  */
-public function save() {
+  public function save()
+  {
   $entityManager = $this->getDoctrine()->getManager();
   $article = new Article();
   $article->setNom('Article 3');
