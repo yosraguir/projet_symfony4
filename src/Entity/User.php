@@ -40,11 +40,15 @@ class User implements UserInterface
      * @Assert\Length(
      *      min = 8,
      *      minMessage = "Votre mot de passe doit comporter au minimum {{ limit }} caractères")
+     * @Assert\EqualTo(propertyPath = "confirm_password",
+     * message="Vous n'avez pas saisi le même mot de passe !" )
      */
     private $password;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\EqualTo(propertyPath = "password",
+     * message="Vous n'avez pas saisi le même mot de passe !" )
      */
     private $confirm_password;
 

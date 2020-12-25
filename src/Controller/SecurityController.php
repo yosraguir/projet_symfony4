@@ -14,6 +14,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {
+
 /**
 * @Route("/connexion", name="security_login")
 */
@@ -27,25 +28,27 @@ public function login(AuthenticationUtils $authenticationUtils)
             'lastUsername'=>$lastUsername,'error' => $error]);
     }
 
-    /**
- * @Route("/inscription", name="security_registration")
- */
+/**
+* @Route("/inscription", name="security_registration")
+*/
  public function registration(Request $request, EntityManagerInterface $em , UserPasswordEncoderInterface $encoder )
     {
         $user = new User();
         $form = $this->createForm(RegistrationType::class, $user);
         $form->handleRequest($request);
-
+        dump($request);
         if($form->isSubmitted() && $form->isValid()) {
             $hash = $encoder->encodePassword($user,$user->getPassword());
             $hash2 = $encoder->encodePassword($user,$user->getConfirmPassword());
             $user->setPassword($hash);
             $user->setConfirmPassword($hash2);
         //l'objet $em sera affecté automatiquement grâce à l'injection des dépendances de symfony 4
-
-        $em->persist($user);
-        $em->flush();
         
+            $em->persist($user);
+            $em->flush();
+            return $this->redirectToRoute('security_login');
+       
+       
         }
         return $this->render('security/registration.html.twig',[
             'form' =>$form->createView()]);
