@@ -1,5 +1,5 @@
 {% extends 'baseDashbord.html.twig' %}
-{% block title%} Liste des Utilisateurs{% endblock %}
+
 {% block body %}
 <h1>Litse des Utilisateurs</h1>
 <table id="users" class="table table-striped">
@@ -8,6 +8,7 @@
  <th>Id</th>
  <th>email</th>
  <th>roles</th>
+ <th>statut</th>
  <th>Actions</th>
  </tr>
  </thead>
@@ -27,6 +28,26 @@
  {% endif %}
  {% endfor %}
  </td>
+ <div class="form-actions form-group">
+
+
+                                                <td>
+                                                    {% if user.active %}
+                                                        <a href="{{ path('status_utilisateur', {'id': user.id}) }}"
+                                                           title="activer"  onclick="return confirm('vous-voulez vraiment activer cette utilisateur?')">
+                                                            <i class="fa fa-unlock"></i>
+                                                        </a>
+                                                    {% else %}
+                                                        <a href="{{ path('status_utilisateur', {'id': user.id}) }}"
+                                                           title="desactiver"  onclick="return confirm('vous-voulez vraiment déactiver cette utilisateur?')">
+                                                            <i class="fa fa-unlock-alt"></i>
+                                                        </a>
+
+                                                    {% endif %}
+
+                                                </td>
+                                            </div>
+
  <td>
 <a href="{{ path('admin_modifier_utilisateur', {'id': user.id }) }}" class="btn btndark">Modifier</a>
  </td>

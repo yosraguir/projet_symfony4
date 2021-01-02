@@ -41,7 +41,7 @@
                                     <div class="text-center">
                                         <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
 										{% if error %}
-										<div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+										<div  class="alert alert-danger">{{ error.messageKey }}</div>
 										{% endif %}
                                     </div>
                                     <form class="user" action="{{ path('security_login') }}" method="post">
@@ -65,9 +65,7 @@
                                         </a>
                                     </form>
                                     <hr>
-                                    <div class="text-center">
-                                        <a class="small" href="forgot-password.html">Forgot Password?</a>
-                                    </div>
+                                  
                                     <div class="text-center">
                                         <a class="small" href="{{ path('security_registration') }}">Create an Account!</a>
                                     </div>

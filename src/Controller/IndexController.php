@@ -70,7 +70,7 @@ class IndexController extends AbstractController
   return new Response('Article enregisté avec id '.$article->getId());
   }
 
-  /**
+/**
  * @IsGranted("ROLE_EDITOR")
  * @Route("/article/new", name="new_article")
  * Method({"GET", "POST"})

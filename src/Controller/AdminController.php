@@ -44,4 +44,20 @@ class AdminController extends AbstractController
  return $this->render('admin/editUser.html.twig', ['formUser' => $form->createView()]);
  }
 
+  /**
+     * @Route("/utilisateur/status/{id}" , name="status_utilisateur")
+
+     */
+    public function activerAction(User $utilisateur)
+    {
+        $utilisateur->setActive(!$utilisateur->getActive());
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($utilisateur);
+        $em->flush();
+
+        return $this->redirectToRoute('admin_utilisateurs');
+    }
+
+
+
 }
