@@ -1,58 +1,58 @@
 {% extends 'baseDashbord.html.twig' %}
-
+{% block title %}Litse des utilisateurs
+{% endblock %}
 {% block body %}
-<h1>Litse des Utilisateurs</h1>
-<table id="users" class="table table-striped">
- <thead>
- <tr>
- <th>Id</th>
- <th>email</th>
- <th>roles</th>
- <th>statut</th>
- <th>Actions</th>
- </tr>
- </thead>
- <tbody>
- {% for user in users %}
- <tr>
- <td>{{ user.id }}</td>
- <td>{{ user.email }}</td>
- <td>
- {% for role in user.roles %}
- {% if role=="ROLE_USER" %}
- Utilisateur
- {% elseif role=="ROLE_EDITOR" %}
- Editeur
- {% elseif role=="ROLE_ADMIN" %}
- Administrateur
- {% endif %}
- {% endfor %}
- </td>
- <div class="form-actions form-group">
+	<h1>Litse des Utilisateurs</h1>
+	<table id="users" class="table table-striped">
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>email</th>
+				<th>roles</th>
+				<th>statut</th>
+				<th>Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for user in users %}
+				<tr>
+					<td>{{ user.id }}</td>
+					<td>{{ user.email }}</td>
+					<td>
+						{% for role in user.roles %}
+							{% if role=="ROLE_USER" %}
+								Utilisateur
+							{% elseif role=="ROLE_EDITOR" %}
+								Editeur
+							{% elseif role=="ROLE_ADMIN" %}
+								Administrateur
+							{% endif %}
+						{% endfor %}
+					</td>
+					<div class="form-actions form-group">
 
 
-                                                <td>
-                                                    {% if user.active %}
-                                                        <a href="{{ path('status_utilisateur', {'id': user.id}) }}"
-                                                           title="activer"  onclick="return confirm('vous-voulez vraiment activer cette utilisateur?')">
-                                                            <i class="fa fa-unlock"></i>
-                                                        </a>
-                                                    {% else %}
-                                                        <a href="{{ path('status_utilisateur', {'id': user.id}) }}"
-                                                           title="desactiver"  onclick="return confirm('vous-voulez vraiment déactiver cette utilisateur?')">
-                                                            <i class="fa fa-unlock-alt"></i>
-                                                        </a>
+						<td>
+							{% if user.active %}
+								<a href="{{ path('utilisateur_status', {'id': user.id}) }}" title="activer" onclick="return confirm('vous-voulez vraiment activer cette utilisateur?')">
+									<i class="fa fa-unlock"></i>
+								</a>
+							{% else %}
+								<a href="{{ path('utilisateur_status', {'id': user.id}) }}" title="desactiver" onclick="return confirm('vous-voulez vraiment déactiver cette utilisateur?')">
+									<i class="fa fa-unlock-alt"></i>
+								</a>
 
-                                                    {% endif %}
+							{% endif %}
 
-                                                </td>
-                                            </div>
+						</td>
+					</div>
 
- <td>
-<a href="{{ path('admin_modifier_utilisateur', {'id': user.id }) }}" class="btn btndark">Modifier</a>
- </td>
- </tr>
- {% endfor %}
- </tbody>
- </table>
+
+					<td>
+						<a href="{{ path('admin_modifier_utilisateur', {'id': user.id }) }}" class="btn btndark">Modifier</a>
+					</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
 {% endblock %}

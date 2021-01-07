@@ -30,18 +30,19 @@ class AdminController extends AbstractController
  /**
  * @Route("/utilisateurs/modifier/{id}", name="modifier_utilisateur")
  */
- public function editUser(Request $request, User $user, EntityManagerInterface $em) {
+ public function editUser(Request $request, User $user, EntityManagerInterface $em) 
+ {
 
- $form = $this->createForm(EditUserType::class,$user);
+    $form = $this->createForm(EditUserType::class,$user);
 
- $form->handleRequest($request);
- if($form->isSubmitted() && $form->isValid()) {
- $em->flush();
+    $form->handleRequest($request);
+    if($form->isSubmitted() && $form->isValid()) {
+    $em->flush();
 
- return $this->redirectToRoute('admin_utilisateurs');
- }
+    return $this->redirectToRoute('admin_utilisateurs');
+    }
 
- return $this->render('admin/editUser.html.twig', ['formUser' => $form->createView()]);
+    return $this->render('admin/editUser.html.twig', ['formUser' => $form->createView()]);
  }
 
   /**
@@ -57,6 +58,8 @@ class AdminController extends AbstractController
 
         return $this->redirectToRoute('admin_utilisateurs');
     }
+
+    
 
 
 

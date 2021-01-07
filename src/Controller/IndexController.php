@@ -9,6 +9,9 @@ use App\Form\PriceSearchType;
 use App\Form\CategorySearchType;
 use App\Form\PropertySearchType;
 use App\Form\ArticleType;
+use App\Repository\UserRepository;
+use App\Repository\ArticleRepository;
+use App\Repository\CategoryRepository;
 Use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,9 +26,21 @@ class IndexController extends AbstractController
   /**
   * @Route("/", name="dashbord")
   */
-  public function index()
+  public function index(UserRepository $repository , ArticleRepository $articleRepository , CategoryRepository $categoryRepository)
   {
-      return $this->render('baseDashbord.html.twig');
+    $users = $repository->findAll();
+    $articles = $articleRepository ->findAll();
+    $categories = $categoryRepository->findAll();
+    $nbrUsers= count($users);
+    $nbrArticles = count($articles);
+    $nbrcategories = count($categories);
+    return $this->render('baseDashbord.html.twig',[
+        'nbrUser'=>$nbrUsers,
+        'nbrArticles'=>$nbrArticles,
+        'nbrCategory'=>$nbrcategories,
+       
+    ]);
+
   }
     /**
      *@Route("/article",name="article_list")
@@ -60,14 +75,13 @@ class IndexController extends AbstractController
  */
   public function save()
   {
-  $entityManager = $this->getDoctrine()->getManager();
-  $article = new Article();
-  $article->setNom('Article 3');
-  $article->setPrix(3000);
- 
-  $entityManager->persist($article);
-  $entityManager->flush();
-  return new Response('Article enregisté avec id '.$article->getId());
+    $entityManager = $this->getDoctrine()->getManager();
+    $article = new Article();
+    $article->setNom('Article 3');
+    $article->setPrix(3000);
+    $entityManager->persist($article);
+    $entityManager->flush();
+    return new Response('Article enregisté avec id '.$article->getId());
   }
 
 /**
@@ -75,11 +89,12 @@ class IndexController extends AbstractController
  * @Route("/article/new", name="new_article")
  * Method({"GET", "POST"})
  */
- public function new(Request $request) {
-  $article = new Article();
-  $form = $this->createForm(ArticleType::class, $article);
-  $form->handleRequest($request);
-  if($form->isSubmitted() && $form->isValid()) {
+ public function new(Request $request) 
+ {
+    $article = new Article();
+    $form = $this->createForm(ArticleType::class, $article);
+    $form->handleRequest($request);
+    if($form->isSubmitted() && $form->isValid()) {
     $article = $form->getData();
    
     $entityManager = $this->getDoctrine()->getManager();
@@ -94,12 +109,12 @@ class IndexController extends AbstractController
  /**
  * @Route("/article/{id}", name="article_show")
  */
-public function show($id) {
-  $article = $this->getDoctrine()->getRepository(Article::class)
-  ->find($id);
-  return $this->render('articles/show.html.twig',
-  array('article' => $article));
-   }
+public function show($id) 
+{
+    $article = $this->getDoctrine()->getRepository(Article::class)->find($id);
+    return $this->render('articles/show.html.twig',
+    array('article' => $article));
+}
 
    //
 
@@ -108,21 +123,22 @@ public function show($id) {
       * @Route("/article/edit/{id}", name="edit_article")
       * Method({"GET", "POST"})
  */
- public function edit(Request $request, $id) {
-  $article = new Article();
-  $article = $this->getDoctrine()->getRepository(Article::class)->find($id);
- 
-  $form = $this->createForm(ArticleType::class, $article);
-  $form->handleRequest($request);
-  if($form->isSubmitted() && $form->isValid()) {
- 
-  $entityManager = $this->getDoctrine()->getManager();
-  $entityManager->flush();
- 
-  return $this->redirectToRoute('article_list');
-  }
- 
-  return $this->render('articles/edit.html.twig', ['form' => $form->createView()]);
+ public function edit(Request $request, $id)
+  {
+    $article = new Article();
+    $article = $this->getDoctrine()->getRepository(Article::class)->find($id);
+  
+    $form = $this->createForm(ArticleType::class, $article);
+    $form->handleRequest($request);
+    if($form->isSubmitted() && $form->isValid()) {
+  
+    $entityManager = $this->getDoctrine()->getManager();
+    $entityManager->flush();
+  
+    return $this->redirectToRoute('article_list');
+    }
+  
+    return $this->render('articles/edit.html.twig', ['form' => $form->createView()]);
   }
  
   /**
@@ -130,39 +146,43 @@ public function show($id) {
     * @Route("/article/delete/{id}",name="delete_article")
     * @Method({"DELETE"})
  */
- public function delete(Request $request, $id) {
-  $article = $this->getDoctrine()->getRepository(Article::class)->find($id);
- 
-  $entityManager = $this->getDoctrine()->getManager();
-  $entityManager->remove($article);
-  $entityManager->flush();
- 
-  $response = new Response();
-  $response->send();
-  return $this->redirectToRoute('article_list');
+ public function delete(Request $request, $id)
+ {
+    $article = $this->getDoctrine()->getRepository(Article::class)->find($id);
+  
+    $entityManager = $this->getDoctrine()->getManager();
+    $entityManager->remove($article);
+    $entityManager->flush();
+  
+    $response = new Response();
+    $response->send();
+    return $this->redirectToRoute('article_list');
   }
 
 /**
  * @Route("/art_cat/", name="article_par_cat")
  * Method({"GET", "POST"})
  */
- public function articlesParCategorie(Request $request) {
-  $categorySearch = new CategorySearch();
-  $form = $this->createForm(CategorySearchType::class,$categorySearch);
-  $form->handleRequest($request);
-  $articles= [];
-  if($form->isSubmitted() && $form->isValid()) {
-    $category = $categorySearch->getCategory();
-   
-    if ($category!="")
-   $articles= $category->getArticles();
-    else
-    $articles= $this->getDoctrine()->getRepository(Article::class)->findAll();
-    }
-   
-    return $this->render('articles/articlesParCategorie.html.twig',['form' => $form->createView(),'articles' => $articles]);
-   
+ public function articlesParCategorie(Request $request) 
+ {
+    $categorySearch = new CategorySearch();
+    $form = $this->createForm(CategorySearchType::class,$categorySearch);
+    $form->handleRequest($request);
+    $articles= [];
+    if($form->isSubmitted() && $form->isValid()) {
+      $category = $categorySearch->getCategory();
+    
+      if ($category!="")
+    $articles= $category->getArticles();
+      else
+      $articles= $this->getDoctrine()->getRepository(Article::class)->findAll();
+      }
+    
+      return $this->render('articles/articlesParCategorie.html.twig',['form' => $form->createView(),'articles' => $articles]);
+    
   }
+
+  
   /**
  * @Route("/art_prix/", name="article_par_prix")
  * Method({"GET"})
@@ -170,17 +190,17 @@ public function show($id) {
  public function articlesParPrix(Request $request)
  {
 
-    $priceSearch = new PriceSearch();
-    $form = $this->createForm(PriceSearchType::class,$priceSearch);
-    $form->handleRequest($request);
-    $articles= [];
-    if($form->isSubmitted() && $form->isValid()) {
-    $minPrice = $priceSearch->getMinPrice();
-    $maxPrice = $priceSearch->getMaxPrice();
+      $priceSearch = new PriceSearch();
+      $form = $this->createForm(PriceSearchType::class,$priceSearch);
+      $form->handleRequest($request);
+      $articles= [];
+      if($form->isSubmitted() && $form->isValid()) {
+      $minPrice = $priceSearch->getMinPrice();
+      $maxPrice = $priceSearch->getMaxPrice();
 
-    $articles= $this->getDoctrine()->
-    getRepository(Article::class)->findByPriceRange($minPrice,$maxPrice);
- }
+      $articles= $this->getDoctrine()->
+      getRepository(Article::class)->findByPriceRange($minPrice,$maxPrice);
+  }
  return $this->render('articles/articleParPrix.html.twig',[ 'form' =>$form->createView(), 'articles' => $articles]);
  }
   
